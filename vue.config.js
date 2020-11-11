@@ -4,5 +4,7 @@ module.exports = {
   devServer: {
     port: 8088,
     host: process.env.NODE_ENV === 'production' ? 'localhost' : '0.0.0.0'
-  }
+  },
+  publicPath: './',
+  assetsDir: ''
 };
