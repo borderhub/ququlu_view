@@ -8,12 +8,12 @@ Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
   {
-    path: '/ququlu_vuew/dist',
+    path: '/ququlu_view/dist',
     name: 'Home',
     component: RootViewer
   },
   {
-    path: '/ququlu_vuew/dist/calender',
+    path: '/ququlu_view/dist/calender',
     name: 'Calender',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -22,7 +22,7 @@ const routes: RouteConfig[] = [
     component: CalenderViewer
   },
   {
-    path: '/ququlu_vuew/dist/sharemap',
+    path: '/ququlu_view/dist/sharemap',
     name: 'ShareMap',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
