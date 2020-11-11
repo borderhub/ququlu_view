@@ -41,6 +41,7 @@
         @mouseMoved="onMouseMoved"
         @mouseLeaved="onMouseLeaved"
         @mapZoomed="onMapZoomed"
+        @styleDataLoading="onStyleDataLoading"
         @clicked="onClicked">
         <template v-for="marker in markers">
           <marker-base
@@ -62,6 +63,7 @@
 import { Component, Emit, Vue, Watch } from 'vue-property-decorator';
 import mapboxgl, { Map, MapboxOptions, MapboxGeoJSONFeature, LngLatLike, LngLat, Marker, MarkerOptions } from 'mapbox-gl';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties, GeoJsonObject } from 'geojson';
+import * as MapboxLanguage from '@mapbox/mapbox-gl-language';
 import MapBase from '@/components/molecules/MapBase.vue';
 import appModule from '@/model/store/modules/app-module';
 import mapModule from '@/model/store/modules/map-module';
@@ -89,7 +91,6 @@ export default class ShareMapViewer extends Vue {
   private targetArea: GetGeoJsonInfoRes = {} as GetGeoJsonInfoRes;
   private isBorderZoom: boolean = false;
   private coordinates: LngLatLike = [[130.410767, 33.596383], [130.37427, 33.55402], [130.42678, 33.5631]] as unknown as LngLatLike;
-
   private markers: object[] = [{
     center: this.option.center,
     draggable: false
@@ -98,7 +99,12 @@ export default class ShareMapViewer extends Vue {
   private items = [
     {
       action: 'mdi-ticket',
-      items: [{ title: 'List Item' }],
+      items: [
+        {title: 'ストリート', style: 'streets-v8'},
+        {title: 'light', style: 'light-v10'},
+        {title: 'アウトドア', style: 'outdoors-v11'},
+        {title: '衛星', style: 'satellite-v9'}
+      ],
       title: 'シェア率マップ',
     },
     {
@@ -126,6 +132,11 @@ export default class ShareMapViewer extends Vue {
   }
 
   private async onMapLoaded(t: {map: Map, component: Vue}) {
+    t.map.addControl(
+      new MapboxLanguage({
+        defaultLanguage: 'ja'
+      })
+    );
     console.log(t, mapModule.targetGeoJsonData);
     this.map = t.map;
     if (!t.map.getSource('states')) {
@@ -148,6 +159,13 @@ export default class ShareMapViewer extends Vue {
       );
     }
     appModule.stopLoading();
+  }
+
+  private async onStyleDataLoading(t: {map: Map, component: Vue, state: boolean}) {
+    mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, '福岡市'));
+    setTimeout(() => {
+      this.onMapLoaded(t);
+    }, 400);
   }
 
   private onMapZoomed(t: {map: Map, component: Vue}) {
@@ -298,16 +316,21 @@ export default class ShareMapViewer extends Vue {
     });
   }
 
-  private async onAreaSelect(s: {title: string, lnglat: number[]}) {
+  private async onAreaSelect(s: {title: string, lnglat?: number[], style?: string[]}) {
     mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, s.title));
-    const statesSource: mapboxgl.GeoJSONSource = this.map.getSource('states') as mapboxgl.GeoJSONSource;
-    const meshdataSource: mapboxgl.GeoJSONSource = this.map.getSource('meshdata') as mapboxgl.GeoJSONSource;
-    statesSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
-    meshdataSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
-    this.map.fitBounds(s.lnglat as unknown as [LngLatLike, LngLatLike], {
-      padding: 180,
-      maxZoom: 10
-    });
+    if (s.lnglat) {
+      const statesSource: mapboxgl.GeoJSONSource = this.map.getSource('states') as mapboxgl.GeoJSONSource;
+      const meshdataSource: mapboxgl.GeoJSONSource = this.map.getSource('meshdata') as mapboxgl.GeoJSONSource;
+      statesSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
+      meshdataSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
+      this.map.fitBounds(s.lnglat as unknown as [LngLatLike, LngLatLike], {
+        padding: 180,
+        maxZoom: 10
+      });
+    }
+    if (s.style) {
+      this.map.setStyle('mapbox://styles/mapbox/' + s.style);
+    }
   }
 
   // marker

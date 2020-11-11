@@ -63,6 +63,11 @@ export default class MapBase extends Vue {
       this.mapZoomed();
     });
 
+    this.map.on('styledataloading', async () => {
+      await this.$nextTick();
+      this.styleDataLoading(this.map.isStyleLoaded());
+    });
+
   }
 
   @Emit('mapLoaded')
@@ -104,6 +109,15 @@ export default class MapBase extends Vue {
     return {
       map: this.map,
       component: this
+    };
+  }
+
+  @Emit('styleDataLoading')
+  public styleDataLoading(state: boolean) {
+    return {
+      map: this.map,
+      component: this,
+      state
     };
   }
 
