@@ -78,7 +78,7 @@ import _ from 'lodash';
 })
 export default class ShareMapViewer extends Vue {
   private option: MapboxOptions = {
-    accessToken: process.env.NODE_ENV === 'production' ? 'pk.eyJ1IjoiaGlkZXRha2F0YWtlbWFzYSIsImEiOiJja2hjdWo3OTUwMWV1MnJtcTI3a2V5dno0In0.UEcWgTxFIK7kYkKVsy4hOg' : process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
+    accessToken: process.env.NODE_ENV === 'production' ? 'pk.eyJ1IjoiaGlkZXRha2F0YWtlbWFzYSIsImEiOiJja2d4MXhucWcwODVnMnpyczgxMjJubnhpIn0.yL-0STU6_WV6QIbQAeKs_w' : process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v8',
     center: [130.410767, 33.596383],
