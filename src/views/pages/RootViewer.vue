@@ -5,7 +5,17 @@
     fill-height
     flat
   >
-    <v-row fluid>
+    <v-row fluid full-height align-content="center" justify="center" class="pa-0 ma-0">
+      <v-col>
+        <v-card
+          class="pa-2 ma-2"
+        >
+          <v-card-title>
+            ログイン
+          </v-card-title>
+          <loginForm />
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -18,10 +28,12 @@
   import viewerService from '@/model/services/viewer-service';
   import userService from '@/model/services/user-service';
   import {UserDataOnSessionStorageDataInterface, UserDataOnSessionStorageInterface} from '@/model/interfaces/user-interface';
+  import LoginForm from '@/components/organisms/LoginForm.vue';
   import _ from 'lodash';
 
   @Component({
     components: {
+      'loginForm': LoginForm
     }
   })
   export default class RootViewer extends Vue {
