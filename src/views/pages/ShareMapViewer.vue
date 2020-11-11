@@ -29,7 +29,6 @@
             </v-list-item>
           </v-list-group>
         </v-list>
-        <button @click="addMarker" style="border: 1px solid">click to add marker Dynamically</button>
       </v-card>
     </v-col>
     <v-col cols="8">
