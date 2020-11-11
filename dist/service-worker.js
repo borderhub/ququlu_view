@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "ququlu_view/dist/precache-manifest.c0c4ac9b8f43ac269bc6a41d76fc7cac.js"
+  "/ququlu_view/dist/precache-manifest.21040bf42a4c0f5beb77224c50372ec4.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "ququlu_view"});
