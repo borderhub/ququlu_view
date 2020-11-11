@@ -98,7 +98,7 @@
     /** Methods **/
     private async homeBtn() {
       const token: string = this.$route.query.token as string ?? userModule.apiToken as string;
-      const path: string = `/`;
+      const path: string = `/dist`;
       window.location.href = `${path}?token=${token}`;
     }
 
@@ -107,10 +107,10 @@
       let path = '';
       switch (item.ROUTE) {
         case 'calender':
-          path = `/calender`;
+          path = `/dist/calender`;
           break;
         case 'sharemap':
-          path = `/sharemap`;
+          path = `/dist/sharemap`;
           break;
         default: break;
       }
