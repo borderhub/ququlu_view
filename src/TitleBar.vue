@@ -99,7 +99,7 @@
     private async homeBtn() {
       const token: string = this.$route.query.token as string ?? userModule.apiToken as string;
       const path: string = `/`;
-      window.location.href = `${path}?token=${token}`;
+      window.location.href = `${path}`;
     }
 
     private onChangeContents(item: { TITLE: string, ROUTE: string }): void {
@@ -116,7 +116,7 @@
       }
       if (this.$route.path !== path) {
         const query: QueryInterface = {
-          token: `${token}`
+        //  token: `${token}`
         };
         this.$router.push({ path: `${path}`, query });
       }
@@ -141,7 +141,7 @@
       const token = this.$route.query.token ?? userModule.authToken;
       appModule.initApp({ token: `${token}` });
       const query: QueryInterface = {
-        token: `${token}`
+      //  token: `${token}`
       };
       this.$router.push({path: `${this.$route.path}`,
         query
