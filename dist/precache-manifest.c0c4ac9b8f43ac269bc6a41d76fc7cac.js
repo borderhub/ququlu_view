@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4c750137b8a6cf57922d",
+    "revision": "260bbb363f4e3fece878",
     "url": "ququlu_view/dist/css/app.fd95eff1.css"
   },
   {
@@ -48,7 +48,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "ququlu_view/dist/fonts/materialdesignicons-webfont.fec1b66a.woff"
   },
   {
-    "revision": "9416cbc03475eb51f2181c676613a5fe",
+    "revision": "59a5424ba6ef92703b6a631a8656da25",
     "url": "ququlu_view/dist/index.html"
   },
   {
@@ -56,8 +56,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "ququlu_view/dist/initial.css"
   },
   {
-    "revision": "4c750137b8a6cf57922d",
-    "url": "ququlu_view/dist/js/app.5f2d1a2f.js"
+    "revision": "260bbb363f4e3fece878",
+    "url": "ququlu_view/dist/js/app.137bd13b.js"
   },
   {
     "revision": "3d008ac5246bb01df4f2",
