@@ -78,7 +78,7 @@ import _ from 'lodash';
 })
 export default class ShareMapViewer extends Vue {
   private option: MapboxOptions = {
-    accessToken: process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
+    accessToken: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_MAPBOX_GITHUBPAGES_ACCESSTOKEN : process.env.VUE_APP_MAPBOX_ACCESSTOKEN,
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v8',
     center: [130.410767, 33.596383],
