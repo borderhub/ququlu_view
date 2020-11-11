@@ -98,7 +98,7 @@
     /** Methods **/
     private async homeBtn() {
       const token: string = this.$route.query.token as string ?? userModule.apiToken as string;
-      const path: string = `/dist`;
+      const path: string = `/ququlu_view/dist`;
       window.location.href = `${path}?token=${token}`;
     }
 
@@ -107,10 +107,10 @@
       let path = '';
       switch (item.ROUTE) {
         case 'calender':
-          path = `/dist/calender`;
+          path = `/ququlu_view/dist/calender`;
           break;
         case 'sharemap':
-          path = `/dist/sharemap`;
+          path = `/ququlu_view/dist/sharemap`;
           break;
         default: break;
       }

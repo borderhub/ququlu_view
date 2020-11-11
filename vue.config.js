@@ -5,6 +5,6 @@ module.exports = {
     port: 8088,
     host: process.env.NODE_ENV === 'production' ? 'localhost' : '0.0.0.0'
   },
-  publicPath: './',
+  publicPath: './ququlu_view/dist/',
   assetsDir: ''
 };
