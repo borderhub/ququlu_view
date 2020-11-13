@@ -1,14 +1,16 @@
+ShareMapViewer
+
 <template>
   <v-row full-height align-content="center" justify="center">
     <v-col cols="3">
       <v-card
         class="pa-2 ma-2"
       >
-        <v-list>
+        <v-list expand>
           <v-list-group
-            v-for="item in items"
+            v-for="item in menus"
             :key="item.title"
-            v-model="item.active"
+            :value="item.active"
             :prepend-icon="item.action"
             no-action
           >
@@ -18,15 +20,52 @@
               </v-list-item-content>
             </template>
 
-            <v-list-item
+            <v-list-group
               v-for="child in item.items"
               :key="child.title"
-              @click="onAreaSelect(child)"
+              :value="child.active"
+              no-action
+              sub-group
             >
-              <v-list-item-content>
-                <v-list-item-title v-text="child.title"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+              <template v-slot:activator>
+                <v-list-item-content>
+                  <v-list-item-title @click="onAreaSelect(child)" v-text="child.title"></v-list-item-title>
+                </v-list-item-content>
+              </template>
+
+              <v-list-group
+                v-for="grandchild in child.items"
+                :key="grandchild.title"
+                :value="grandchild.active"
+                no-action
+                sub-group
+              >
+                <template v-slot:activator>
+                  <v-list-item-content>
+                    <v-list-item-title @click="onGrandchildAreaSelect(grandchild, child)" v-text="grandchild.title"></v-list-item-title>
+                  </v-list-item-content>
+                </template>
+
+                  <v-list-item
+                    v-for="greatgrandchild in grandchild.items"
+                    :key="greatgrandchild.title"
+                    @click="onGreatGrandchildAreaSelect(greatgrandchild, grandchild, child)"
+                    exact-active-class="blue"
+                  >
+                    <template v-slot:default="{ active }">
+                      <v-list-item-icon>
+                        <v-icon v-text="greatgrandchild.action"></v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                        <v-list-item-title v-text="greatgrandchild.title"></v-list-item-title>
+                      </v-list-item-content>
+                    </template>
+                  </v-list-item>
+
+              </v-list-group>
+
+            </v-list-group>
+
           </v-list-group>
         </v-list>
       </v-card>
@@ -86,6 +125,7 @@ export default class ShareMapViewer extends Vue {
     center: [130.410767, 33.596383],
     zoom: 10
   };
+  private tscope: {map: Map, component: Vue} = {} as {map: Map, component: Vue};
   private map: Map = {} as Map;
   private hoveredStateId: number | null = null;
   private targetArea: GetGeoJsonInfoRes = {} as GetGeoJsonInfoRes;
@@ -96,24 +136,70 @@ export default class ShareMapViewer extends Vue {
     draggable: false
   }];
 
-  private items = [
+  private menus = [
     {
       action: 'mdi-ticket',
+      active: true,
       items: [
-        {title: 'ストリート', style: 'streets-v8'},
-        {title: 'light', style: 'light-v10'},
-        {title: 'アウトドア', style: 'outdoors-v11'},
-        {title: '衛星', style: 'satellite-v9'}
+        {title: 'ストリート', style: 'streets-v8', append: false},
+        {title: 'light', style: 'light-v10', append: false},
+        {title: 'アウトドア', style: 'outdoors-v11', append: false},
+        {title: '衛星', style: 'satellite-v9', append: false}
+      ],
+      title: 'マップスタイル',
+    },
+    {
+      action: 'mdi-ticket',
+      active: true,
+      items: [
+        {title: '契約週本数', type: 'contract', append: false},
+        {title: '商品カテゴリ別週本数', style: 'category', append: false},
+        {title: '過去の営業エリア', style: 'history', append: false}
       ],
       title: 'シェア率マップ',
     },
     {
-      action: 'map',
+      action: 'my_location',
       active: true,
       items: [
-        {title: '福岡市', lnglat: [[130.36572, 33.56589], [130.36572, 33.56589]] as [LngLatLike, LngLatLike]},
-        {title: '太宰府市', lnglat: [[130.52758, 33.52177], [130.52758, 33.52177]] as [LngLatLike, LngLatLike]},
-        {title: '糸島市', lnglat: [[130.20705, 33.5375], [130.20705, 33.5375]] as [LngLatLike, LngLatLike]}
+        {
+          title: '福岡県',
+          lnglat: [[130.36572, 33.56589], [130.36572, 33.56589]] as [LngLatLike, LngLatLike],
+          action: 'mdi-menu-right',
+          active: true,
+          items: [
+            {
+              title: '福岡市',
+              lnglat: [[130.36572, 33.56589], [130.36572, 33.56589]] as [LngLatLike, LngLatLike],
+              action: 'mdi-menu-right',
+              active: true,
+              append: true,
+              items: [
+                {
+                  title: '中央区', lnglat: [[130.38598, 33.58239], [130.38598, 33.58239]] as [LngLatLike, LngLatLike]
+                },
+                {
+                  title: '博多区', lnglat: [[130.43973, 33.58364], [130.43973, 33.58364]] as [LngLatLike, LngLatLike]
+                },
+                {
+                  title: '南区', lnglat: [[130.41142, 33.5425], [130.41142, 33.5425]] as [LngLatLike, LngLatLike]
+                }
+              ]
+            },
+            {
+              title: '太宰府市',
+              action: 'chevron_right',
+              append: false,
+              lnglat: [[130.52758, 33.52177], [130.52758, 33.52177]] as [LngLatLike, LngLatLike]
+            },
+            {
+              title: '糸島市',
+              action: 'chevron_right',
+              append: false,
+              lnglat: [[130.20705, 33.5375], [130.20705, 33.5375]] as [LngLatLike, LngLatLike]
+            }
+          ]
+        }
       ],
       title: '地域',
     },
@@ -131,13 +217,55 @@ export default class ShareMapViewer extends Vue {
     return window.innerHeight / 1.5;
   }
 
-  private async onMapLoaded(t: {map: Map, component: Vue}) {
+  get contractData() {
+    return mapModule.contractData;
+  }
+
+  get targetGeoJsonData() {
+    return mapModule.targetGeoJsonData;
+  }
+
+  @Watch('contractData')
+  private onContractData() {
+    mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, undefined , this.contractData));
+    this.onReSouce({lnglat: [this.contractData.results.lnglat, this.contractData.results.lnglat], zoom: 10, padding: 180});
+    if (this.map.getLayer('earthquakes-heat')) {
+      this.map.removeLayer('earthquakes-heat');
+    }
+    if (this.map.getLayer('earthquakes-point')) {
+      this.map.removeLayer('earthquakes-point');
+    }
+    this.addHeatMapLayer(this.tscope);
+  }
+
+  @Watch('targetGeoJsonData')
+  private onTargetGeoJsonData() {
+  //  console.log('onTargetGeoJsonData mapModule.targetGeoJsonData-- ', mapModule.targetGeoJsonData);
+  }
+
+  private onReSouce(param: {lnglat: [LngLatLike, LngLatLike], zoom: number, padding: number}) {
+    if (param.lnglat) {
+      const statesSource: mapboxgl.GeoJSONSource = this.map.getSource('states') as mapboxgl.GeoJSONSource;
+      const meshdataSource: mapboxgl.GeoJSONSource = this.map.getSource('meshdata') as mapboxgl.GeoJSONSource;
+      const earthquakesSource: mapboxgl.GeoJSONSource = this.map.getSource('earthquakes') as mapboxgl.GeoJSONSource;
+      statesSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
+      meshdataSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
+      earthquakesSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
+      this.map.fitBounds(param.lnglat as unknown as [LngLatLike, LngLatLike], {
+        padding: param.padding,
+        maxZoom: param.zoom
+      });
+    }
+  }
+
+  private async onMapLoaded(t: {map: Map, component: Vue}, onStyleDataLoading?: boolean) {
+    this.tscope = t;
     t.map.addControl(
       new MapboxLanguage({
         defaultLanguage: 'ja'
       })
     );
-    console.log(t, mapModule.targetGeoJsonData);
+    // console.log(t, 'mapModule.targetGeoJsonData-- ', mapModule.targetGeoJsonData, mapModule.contractData);
     this.map = t.map;
     if (!t.map.getSource('states')) {
       t.map.addSource(
@@ -158,21 +286,38 @@ export default class ShareMapViewer extends Vue {
         }
       );
     }
+
+    if (!t.map.getSource('earthquakes')) {
+      // ヒートマップ
+      t.map.addSource(
+        'earthquakes', {
+          'type': 'geojson',
+          'data': mapModule.targetGeoJsonData as unknown as FeatureCollection
+        }
+      );
+      if (onStyleDataLoading) {
+        this.addHeatMapLayer(t);
+      }
+    }
+
     appModule.stopLoading();
   }
 
   private async onStyleDataLoading(t: {map: Map, component: Vue, state: boolean}) {
-    mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, '福岡市'));
+    this.tscope = t;
+    // mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, {ken: '福岡県', gst: '福岡市' }));
     setTimeout(() => {
-      this.onMapLoaded(t);
-    }, 400);
+      this.onMapLoaded(t, true);
+    }, 600);
   }
 
   private onMapZoomed(t: {map: Map, component: Vue}) {
+    this.tscope = t;
     // 現在のズームレベル取得
     if (this.isBorderZoom !== t.map.getZoom() >= 13) {
       if (t.map.getZoom() >= 13) {
-        this.addMeshdataLayer(t);
+        // this.addHeatMapLayer(t);
+        // this.addMeshdataLayer(t);
         const func = _.debounce(() => {
           if (t.map.getLayer('state-fills')) {
             t.map.removeLayer('state-fills');
@@ -185,9 +330,11 @@ export default class ShareMapViewer extends Vue {
       } else {
         this.addStateLayer(t);
         const func = _.debounce(() => {
+          /*
           if (t.map.getLayer('2DmeshLayer')) {
             t.map.removeLayer('2DmeshLayer');
           }
+          */
         }, 400);
         func();
       }
@@ -316,20 +463,164 @@ export default class ShareMapViewer extends Vue {
     });
   }
 
-  private async onAreaSelect(s: {title: string, lnglat?: number[], style?: string[]}) {
-    mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, s.title));
-    if (s.lnglat) {
-      const statesSource: mapboxgl.GeoJSONSource = this.map.getSource('states') as mapboxgl.GeoJSONSource;
-      const meshdataSource: mapboxgl.GeoJSONSource = this.map.getSource('meshdata') as mapboxgl.GeoJSONSource;
-      statesSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
-      meshdataSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
-      this.map.fitBounds(s.lnglat as unknown as [LngLatLike, LngLatLike], {
-        padding: 180,
-        maxZoom: 10
-      });
+  private addHeatMapLayer(t: {map: Map, component: Vue}) {
+    t.map.addLayer(
+      {
+        'id': 'earthquakes-heat',
+        'type': 'heatmap',
+        'source': 'earthquakes',
+        'maxzoom': 20,
+        'paint': {
+          // Increase the heatmap weight based on frequency and property magnitude
+          'heatmap-weight': [
+            'interpolate',
+            ['linear'],
+            ['get', 'mag'],
+            0, 0,
+            100, 1
+          ],
+          // Increase the heatmap color weight weight by zoom level
+          // heatmap-intensity is a multiplier on top of heatmap-weight
+          'heatmap-intensity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 1,
+            5, 13
+          ],
+          // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
+          // Begin color ramp at 0-stop with a 0-transparancy color
+          // to create a blur-like effect.
+          'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0,
+            'rgba(33,102,172,0)',
+            0.2,
+            'rgb(103,169,207)',
+            0.4,
+            'rgb(209,229,240)',
+            0.6,
+            'rgb(253,219,199)',
+            0.8,
+            'rgb(239,138,98)',
+            1,
+            'rgb(178,24,43)'
+          ],
+          // Adjust the heatmap radius by zoom level
+          'heatmap-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            0, 2,
+            10, 20
+          ],
+          // Transition from heatmap to circle layer by zoom level
+          'heatmap-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            7, 1,
+            10, 2
+          ]
+        }
+      },
+      'waterway-label'
+    );
+
+    t.map.addLayer(
+      {
+        'id': 'earthquakes-point',
+        'type': 'circle',
+        'source': 'earthquakes',
+        'minzoom': 10,
+        'paint': {
+          // Size circle radius by earthquake magnitude and zoom level
+          'circle-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            13,
+            ['interpolate', ['linear'], ['get', 'mag'], 1, 1, 6, 14],
+            16,
+            ['interpolate', ['linear'], ['get', 'mag'], 1, 5, 6, 50]
+          ],
+          // Color circle by earthquake magnitude
+          'circle-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'mag'],
+            0,
+            'rgba(33,102,172,0)',
+            1,
+            'rgb(103,169,207)',
+            2,
+            'rgb(209,229,240)',
+            3,
+            'rgb(253,219,199)',
+            4,
+            'rgb(239,138,98)',
+            5,
+            'rgb(178,24,43)'
+          ],
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 1,
+          // Transition from heatmap to circle layer by zoom level
+          'circle-opacity': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            7, 0,
+            8, 16
+          ]
+        }
+      },
+      'waterway-label'
+    );
+  }
+
+  private async onAreaSelect(ken: {title: string, lnglat?: number[], style?: string[], type?: string}) {
+    switch (ken.type) {
+      case 'contract':
+        await mapModule.requestShareMapContractInfo('data/sharemap/contract.json');
+        break;
+      case 'category':
+        break;
+      case 'history':
+        break;
     }
-    if (s.style) {
-      this.map.setStyle('mapbox://styles/mapbox/' + s.style);
+    if (ken.style) {
+      this.map.setStyle('mapbox://styles/mapbox/' + ken.style);
+    }
+  }
+
+  private async onGrandchildAreaSelect(
+    gst: {title: string, lnglat?: number[], style?: string[]},
+    ken: {title: string, lnglat?: number[], style?: string[]}
+  ) {
+    mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, {ken: ken.title, gst: gst.title }));
+    this.onReSouce({lnglat: gst.lnglat as unknown as [LngLatLike, LngLatLike], zoom: 10, padding: 180});
+    if (this.map.getLayer('earthquakes-heat')) {
+      this.map.removeLayer('earthquakes-heat');
+    }
+    if (this.map.getLayer('earthquakes-point')) {
+      this.map.removeLayer('earthquakes-point');
+    }
+  }
+
+  private async onGreatGrandchildAreaSelect(
+    css: {title: string, lnglat?: number[], style?: string[]},
+    gst: {title: string, lnglat?: number[], style?: string[]},
+    ken: {title: string, lnglat?: number[], style?: string[]}
+  ) {
+    mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, {ken: ken.title, gst: gst.title, css: css.title}));
+    this.onReSouce({lnglat: css.lnglat as unknown as [LngLatLike, LngLatLike], zoom: 12, padding: 180});
+    if (this.map.getLayer('earthquakes-heat')) {
+      this.map.removeLayer('earthquakes-heat');
+    }
+    if (this.map.getLayer('earthquakes-point')) {
+      this.map.removeLayer('earthquakes-point');
     }
   }
 

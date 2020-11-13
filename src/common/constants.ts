@@ -4,7 +4,7 @@ export const GlobalConstants = {
     MIN_WIDTH: 250,
     MIN_HEIGHT: 250
   },
-  LGCAPI: {
+  API: {
     AUTH_TOKEN_NAME: 'x-token'
   },
   IMAGE: {
@@ -48,58 +48,6 @@ export const GlobalConstants = {
       LABEL: '制限された文字数以内で入力下さい'
     },
     USERID: 'ID',
-    USERNAME: '氏名',
-    VOTE: {
-      TEXT: 'いいね'
-    },
-    ACCOUNT: {
-      TITLE: 'アカウント情報'
-    },
-    POSTCOUNTMANAGE: {
-      TITLE: '投稿数管理',
-      SEARCHKEYWORDLABEL: '氏名またはユーザーIDで絞り込み',
-      REFINE: '絞り込み'
-    },
-    CATEGORYMANAGE: {
-      TITLE: 'カテゴリ管理',
-      LABEL: '名称',
-      KEY: 'キー',
-      MIN: {VALUE: 3, TEXT: '３文字以上'},
-      MAX: {VALUE: 50, TEXT: '50文字以内'},
-      REQUIRED: '必須',
-      UNIQ: '一意の値にしてください',
-      REGEX: 'アルファベットで記入ください',
-      SAVECONFIRMATION: '変更したカテゴリーを保存しますか？',
-    },
-    DIGITALBADGE: {
-      NAME: '氏名',
-      GETBADGE: '取得したバッジ',
-      BADGETYPE: 'バッジの種類',
-      CONTENTS: '内容',
-      PUBLISH: '記事公開数',
-      COOL: 'いいね数',
-      POSTS: '投稿数',
-      SRC: 'badge/icons',
-      STATUS: {
-        PUBLISH: {
-          BRONZE : '10件の記事が公開されました。次は30件です。',
-          SILVER : '30件の記事が公開されました。次は100件です。',
-          GOLD : '100件の記事が公開されました。',
-          NONE : '獲得したバッジはありません'
-        },
-        COOL: {
-          BRONZE : '記事に対し10件のいいねをされました。次は30件です。',
-          SILVER : '記事に対し30件のいいねをされました。次は100件です。',
-          GOLD : '記事に対し100件のいいねをされました。',
-          NONE : '獲得したバッジはありません'
-        },
-        POSTS: {
-          BRONZE : '10件の記事が投稿されました。次は30件です。',
-          SILVER : '30件の記事が投稿されました。次は100件です。',
-          GOLD : '100件の記事が投稿されました。',
-          NONE : '獲得したバッジはありません'
-        }
-      }
-    }
+    USERNAME: '氏名'
   }
 };

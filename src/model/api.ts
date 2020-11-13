@@ -5,9 +5,10 @@ import userModule from '@/model/store/modules/user-module';
 import {GlobalConstants} from '@/common/constants';
 import {GetUserInfoRes} from '@/model/dto/res/user/get-user-info-res';
 import {GetGeoJsonInfoRes} from '@/model/dto/res/geojson/get-geojson-info-res';
+import {GetShareMapInfoRes} from '@/model/dto/res/sharemap/get-sharemap-info-res';
 import qs from 'qs';
 
-class LgcApi {
+class API {
 
   private timeout = { timeout: 10000 };
 
@@ -65,9 +66,9 @@ class LgcApi {
   }
 
   /**
-   * geoJson情報取得
+   * geoJson情報取得 スタブ
    *
-   * @return {GetUserInfoRes} APIレスポンス
+   * @return {GetGeoJsonInfoRes} APIレスポンス
    * @throws {ApiError} APIに関するエラー
    *
    */
@@ -79,8 +80,27 @@ class LgcApi {
       const error = err.response?.data?.error;
       throw new ApiError(error?.name, error?.message);
     });
-    this.updateToken(response.headers.hasOwnProperty(GlobalConstants.LGCAPI.AUTH_TOKEN_NAME) ? response.headers[GlobalConstants.LGCAPI.AUTH_TOKEN_NAME] : '');
+    this.updateToken(response.headers.hasOwnProperty(GlobalConstants.API.AUTH_TOKEN_NAME) ? response.headers[GlobalConstants.API.AUTH_TOKEN_NAME] : '');
     return response.data as GetGeoJsonInfoRes;
+  }
+
+  /**
+   * シェアマップ（契約本数）情報取得 スタブ
+   *
+   * @return {GetShareMapInfoRes} APIレスポンス
+   * @throws {ApiError} APIに関するエラー
+   *
+   */
+  public async getShareMapContractInfo(path: string): Promise<GetShareMapInfoRes> {
+    const url = `${path}`;
+    const config = this.getConfig(appModule.token);
+    const response = await axios.get(url, config).catch(err => {
+      console.log(err);
+      const error = err.response?.data?.error;
+      throw new ApiError(error?.name, error?.message);
+    });
+    this.updateToken(response.headers.hasOwnProperty(GlobalConstants.API.AUTH_TOKEN_NAME) ? response.headers[GlobalConstants.API.AUTH_TOKEN_NAME] : '');
+    return response.data as GetShareMapInfoRes;
   }
 
   /**
@@ -98,10 +118,10 @@ class LgcApi {
       const error = err.response?.data?.error;
       throw new ApiError(error?.name, error?.message);
     });
-    this.updateToken(response.headers.hasOwnProperty(GlobalConstants.LGCAPI.AUTH_TOKEN_NAME) ? response.headers[GlobalConstants.LGCAPI.AUTH_TOKEN_NAME] : '');
+    this.updateToken(response.headers.hasOwnProperty(GlobalConstants.API.AUTH_TOKEN_NAME) ? response.headers[GlobalConstants.API.AUTH_TOKEN_NAME] : '');
     return response.data as GetUserInfoRes;
   }
 
 }
 
-export default new LgcApi();
+export default new API();

@@ -40,6 +40,7 @@ export interface GeometryInterface {
 
 export interface GGJIFuturesRes {
   id?: number;
+  mag?: number;
   geometry: GeometryInterface;
   properties: PropertiesInterface;
   type: GeoJsonTypes;

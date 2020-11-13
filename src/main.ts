@@ -20,7 +20,7 @@ const vue = new Vue({
   async created() {
     await mapModule.requestGeoJsonInfo('data/geojson/40-fukuoka-all.geojson');
     // 指定した市区町村のデータに絞り込む
-    mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, '福岡市'));
+    mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, {ken: '福岡県', gst: '福岡市' }));
     this.$mount('#app');
   }
 });
