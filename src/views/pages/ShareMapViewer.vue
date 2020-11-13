@@ -143,7 +143,7 @@ export default class ShareMapViewer extends Vue {
       items: [
         {title: 'ストリート', style: 'streets-v8', append: false},
         {title: 'light', style: 'light-v10', append: false},
-        {title: 'アウトドア', style: 'outdoors-v11', append: false},
+        {title: 'ダーク', style: 'dark-v10', append: false},
         {title: '衛星', style: 'satellite-v9', append: false}
       ],
       title: 'マップスタイル',
@@ -229,11 +229,11 @@ export default class ShareMapViewer extends Vue {
   private onContractData() {
     mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, undefined , this.contractData));
     this.onReSouce({lnglat: [this.contractData.results.lnglat, this.contractData.results.lnglat], zoom: 10, padding: 180});
-    if (this.map.getLayer('earthquakes-heat')) {
-      this.map.removeLayer('earthquakes-heat');
+    if (this.map.getLayer('contract-heat')) {
+      this.map.removeLayer('contract-heat');
     }
-    if (this.map.getLayer('earthquakes-point')) {
-      this.map.removeLayer('earthquakes-point');
+    if (this.map.getLayer('contract-point')) {
+      this.map.removeLayer('contract-point');
     }
     this.addHeatMapLayer(this.tscope);
   }
@@ -247,10 +247,10 @@ export default class ShareMapViewer extends Vue {
     if (param.lnglat) {
       const statesSource: mapboxgl.GeoJSONSource = this.map.getSource('states') as mapboxgl.GeoJSONSource;
       const meshdataSource: mapboxgl.GeoJSONSource = this.map.getSource('meshdata') as mapboxgl.GeoJSONSource;
-      const earthquakesSource: mapboxgl.GeoJSONSource = this.map.getSource('earthquakes') as mapboxgl.GeoJSONSource;
+      const contractSource: mapboxgl.GeoJSONSource = this.map.getSource('contract') as mapboxgl.GeoJSONSource;
       statesSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
       meshdataSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
-      earthquakesSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
+      contractSource.setData(mapModule.targetGeoJsonData as unknown as FeatureCollection);
       this.map.fitBounds(param.lnglat as unknown as [LngLatLike, LngLatLike], {
         padding: param.padding,
         maxZoom: param.zoom
@@ -287,10 +287,10 @@ export default class ShareMapViewer extends Vue {
       );
     }
 
-    if (!t.map.getSource('earthquakes')) {
+    if (!t.map.getSource('contract')) {
       // ヒートマップ
       t.map.addSource(
-        'earthquakes', {
+        'contract', {
           'type': 'geojson',
           'data': mapModule.targetGeoJsonData as unknown as FeatureCollection
         }
@@ -466,18 +466,18 @@ export default class ShareMapViewer extends Vue {
   private addHeatMapLayer(t: {map: Map, component: Vue}) {
     t.map.addLayer(
       {
-        'id': 'earthquakes-heat',
+        'id': 'contract-heat',
         'type': 'heatmap',
-        'source': 'earthquakes',
+        'source': 'contract',
         'maxzoom': 20,
         'paint': {
-          // Increase the heatmap weight based on frequency and property magnitude
+          // Increase the heatmap weight based on frequency and property contractnitude
           'heatmap-weight': [
             'interpolate',
             ['linear'],
-            ['get', 'mag'],
+            ['get', 'contract'],
             0, 0,
-            100, 1
+            1000, 1
           ],
           // Increase the heatmap color weight weight by zoom level
           // heatmap-intensity is a multiplier on top of heatmap-weight
@@ -514,7 +514,7 @@ export default class ShareMapViewer extends Vue {
             ['linear'],
             ['zoom'],
             0, 2,
-            10, 20
+            3, 20
           ],
           // Transition from heatmap to circle layer by zoom level
           'heatmap-opacity': [
@@ -531,37 +531,37 @@ export default class ShareMapViewer extends Vue {
 
     t.map.addLayer(
       {
-        'id': 'earthquakes-point',
+        'id': 'contract-point',
         'type': 'circle',
-        'source': 'earthquakes',
+        'source': 'contract',
         'minzoom': 10,
         'paint': {
-          // Size circle radius by earthquake magnitude and zoom level
+          // Size circle radius by earthquake contractnitude and zoom level
           'circle-radius': [
             'interpolate',
             ['linear'],
             ['zoom'],
+            7,
+            ['interpolate', ['linear'], ['get', 'contract'], 0, 1, 1000, 2],
             13,
-            ['interpolate', ['linear'], ['get', 'mag'], 1, 1, 6, 14],
-            16,
-            ['interpolate', ['linear'], ['get', 'mag'], 1, 5, 6, 50]
+            ['interpolate', ['linear'], ['get', 'contract'], 0, 5, 1000, 10]
           ],
-          // Color circle by earthquake magnitude
+          // Color circle by earthquake contractnitude
           'circle-color': [
             'interpolate',
             ['linear'],
-            ['get', 'mag'],
+            ['get', 'contract'],
             0,
             'rgba(33,102,172,0)',
-            1,
+            200,
             'rgb(103,169,207)',
-            2,
+            400,
             'rgb(209,229,240)',
-            3,
+            600,
             'rgb(253,219,199)',
-            4,
+            800,
             'rgb(239,138,98)',
-            5,
+            1000,
             'rgb(178,24,43)'
           ],
           'circle-stroke-color': 'white',
@@ -601,11 +601,11 @@ export default class ShareMapViewer extends Vue {
   ) {
     mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, {ken: ken.title, gst: gst.title }));
     this.onReSouce({lnglat: gst.lnglat as unknown as [LngLatLike, LngLatLike], zoom: 10, padding: 180});
-    if (this.map.getLayer('earthquakes-heat')) {
-      this.map.removeLayer('earthquakes-heat');
+    if (this.map.getLayer('contract-heat')) {
+      this.map.removeLayer('contract-heat');
     }
-    if (this.map.getLayer('earthquakes-point')) {
-      this.map.removeLayer('earthquakes-point');
+    if (this.map.getLayer('contract-point')) {
+      this.map.removeLayer('contract-point');
     }
   }
 
@@ -616,11 +616,11 @@ export default class ShareMapViewer extends Vue {
   ) {
     mapModule.updateTargetGeoJsonData(mapService.getTargetArea(mapModule.geoJsonData, {ken: ken.title, gst: gst.title, css: css.title}));
     this.onReSouce({lnglat: css.lnglat as unknown as [LngLatLike, LngLatLike], zoom: 12, padding: 180});
-    if (this.map.getLayer('earthquakes-heat')) {
-      this.map.removeLayer('earthquakes-heat');
+    if (this.map.getLayer('contract-heat')) {
+      this.map.removeLayer('contract-heat');
     }
-    if (this.map.getLayer('earthquakes-point')) {
-      this.map.removeLayer('earthquakes-point');
+    if (this.map.getLayer('contract-point')) {
+      this.map.removeLayer('contract-point');
     }
   }
 

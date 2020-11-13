@@ -4,9 +4,8 @@ export interface GSMIPropertiesInterface {
   gstName: string;
   cssName: string;
   moji: string;
-  xCode: string;
-  yCode: string;
-  mag: number;
+  lnglat: LngLat;
+  contract: number;
 }
 
 export interface GSMIInterface {

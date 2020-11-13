@@ -8,129 +8,111 @@
       "gstName": "福岡市",
   		"cssName": "東区",
   		"moji": "和白５丁目",
-  		"xCode": "130.42658",
-  		"yCode": "33.69306",
-  		"mag": 2.3
+			"lnglat": [130.42658, 33.69306],
+  		"contract": 120
   	},
   	{
       "gstName": "福岡市",
   		"cssName": "東区",
   		"moji": "千早４丁目",
-  		"xCode": "130.43799",
-  		"yCode": "33.64827",
-  		"mag": 1.2
+			"lnglat": [130.43799, 33.64827],
+  		"contract": 1
   	},{
       "gstName": "福岡市",
   		"cssName": "博多区",
   		"moji": "中州５丁目",
-  		"xCode": "130.40416",
-  		"yCode": "33.59399",
-  		"mag": 2.3
+			"lnglat": [130.40416, 33.59399],
+  		"contract": 312
   	},{
       "gstName": "福岡市",
   		"cssName": "博多区",
   		"moji": "板付６丁目",
-  		"xCode": "130.45688",
-  		"yCode": "33.55965",
-  		"mag": 0.3
+			"lnglat": [130.45688, 33.55965],
+  		"contract": 630
   	},{
       "gstName": "福岡市",
   		"cssName": "博多区",
   		"moji": "南本町１丁目",
-  		"xCode": "130.4597",
-  		"yCode": "33.54657",
-  		"mag": 4.4
+			"lnglat": [130.4597, 33.54657],
+  		"contract": 4
   	},{
       "gstName": "福岡市",
   		"cssName": "中央区",
   		"moji": "那の津５丁目",
-  		"xCode": "130.38823",
-  		"yCode": "33.60715",
-  		"mag": 2.3
+			"lnglat": [130.38823, 33.60715],
+  		"contract": 962
   	},{
       "gstName": "福岡市",
   		"cssName": "中央区",
   		"moji": "唐人町３丁目",
-  		"xCode": "130.37105",
-  		"yCode": "33.5938",
-  		"mag": 2.3
+			"lnglat": [130.37105, 33.5938],
+  		"contract": 22
   	},{
       "gstName": "福岡市",
   		"cssName": "中央区",
   		"moji": "天神２丁目",
-  		"xCode": "130.39805",
-  		"yCode": "33.58935",
-  		"mag": 5.1
+			"lnglat": [130.39805, 33.58935],
+  		"contract": 45
   	},{
       "gstName": "福岡市",
   		"cssName": "中央区",
   		"moji": "高砂２丁目",
-  		"xCode": "130.40917",
-  		"yCode": "33.57739",
-  		"mag": 7.8
+			"lnglat": [130.40917, 33.57739],
+  		"contract": 97
   	},{
       "gstName": "福岡市",
   		"cssName": "南区",
   		"moji": "野多目４丁目",
-  		"xCode": "130.42192",
-  		"yCode": "33.53831",
-  		"mag": 1.2
+			"lnglat": [130.42192, 33.53831],
+  		"contract": 341
   	},{
       "gstName": "福岡市",
   		"cssName": "南区",
   		"moji": "花畑１丁目",
-  		"xCode": "130.40453",
-  		"yCode": "33.5408",
-  		"mag": 3.6
+			"lnglat": [130.40453, 33.5408],
+  		"contract": 913
   	},{
       "gstName": "福岡市",
   		"cssName": "南区",
   		"moji": "的場１丁目",
-  		"xCode": "130.4329",
-  		"yCode": "33.54484",
-  		"mag": 2.8
+			"lnglat": [130.4329, 33.54484],
+  		"contract": 7
   	},{
       "gstName": "福岡市",
   		"cssName": "南区",
   		"moji": "老司２丁目",
-  		"xCode": "130.42515",
-  		"yCode": "33.53395",
-  		"mag": 0.7
+			"lnglat": [130.42515, 33.53395],
+  		"contract": 210
   	},{
       "gstName": "福岡市",
   		"cssName": "西区",
   		"moji": "生松台１丁目",
-  		"xCode": "130.30061",
-  		"yCode": "33.55752",
-  		"mag": 1.9
+			"lnglat": [130.30061, 33.55752],
+  		"contract": 31
   	},{
       "gstName": "福岡市",
   		"cssName": "西区",
   		"moji": "西の丘２丁目",
-  		"xCode": "130.29915",
-  		"yCode": "33.56673",
-  		"mag": 5.1
+			"lnglat": [130.29915, 33.56673],
+  		"contract": 5
   	},{
       "gstName": "福岡市",
   		"cssName": "城南区",
   		"moji": "樋井川５丁目",
-  		"xCode": "130.3894",
-  		"yCode": "33.541",
-  		"mag": 4.5
+			"lnglat": [130.3894, 33.541],
+  		"contract": 84
   	},{
       "gstName": "福岡市",
   		"cssName": "早良区",
   		"moji": "小田部２丁目",
-  		"xCode": "130.33585",
-  		"yCode": "33.56686",
-  		"mag": 6.2
+			"lnglat": [130.33585, 33.56686],
+  		"contract": 126
   	},{
       "gstName": "福岡市",
   		"cssName": "早良区",
   		"moji": "原６丁目",
-  		"xCode": "130.3438",
-  		"yCode": "33.56508",
-  		"mag": 2.9
+			"lnglat": [130.3438, 33.56508],
+  		"contract": 682
   	}
   	]
   }

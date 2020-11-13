@@ -31,6 +31,7 @@ export interface PropertiesInterface {
   SITYO_NAME: string | null;
   X_CODE: number;
   Y_CODE: number;
+  contract?: number;
 }
 
 export interface GeometryInterface {
@@ -40,7 +41,6 @@ export interface GeometryInterface {
 
 export interface GGJIFuturesRes {
   id?: number;
-  mag?: number;
   geometry: GeometryInterface;
   properties: PropertiesInterface;
   type: GeoJsonTypes;

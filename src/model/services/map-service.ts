@@ -46,7 +46,7 @@ class MapService {
           condition = checkData.length > 0;
           if (checkData.length > 0) {
             const cd = checkData[0] as unknown as GSMIPropertiesInterface[];
-            if (cd[0].mag) { v.mag = cd[0].mag; }
+            if (cd[0].contract) { v.properties.contract = cd[0].contract; }
           }
         }
         if (condition) {
